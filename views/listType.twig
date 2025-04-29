@@ -1,0 +1,38 @@
+ {% from "btn.html.twig" import btn as btn %} 
+ <style>
+        .custom {
+                flex:0 0 19%;
+        }
+        .custom img {height: 190px; object-fit: cover;}
+ </style>
+
+        <div class="d-flex flex-wrap">
+                {% for object in cars_objects %}
+                        <div class="custom border p-3 m-1 position-relative">
+                                <div class="position-absolute" style="right: 4px; top: 4px;">
+                                        <form action="/{{object.id}}/delete" method="post">
+                                               
+                                                <button type="submit" class="btn btn-danger">
+                                                        <i class="fas fa-times"></i>
+                                                </button>
+                                        </form>
+                                </div>
+                                <div class="position-absolute" style="right: 44px; top: 4px;">
+                                        <form action="/cars_objects/{{object.id}}/update" method="get">
+                                               
+                                                <button type="submit" class="btn btn-primary">
+                                                        <i class="fas fa-edit"></i>
+                                                </button>
+                                        </form>
+                                </div>
+                                <img src="{{ object.image }}" alt="{{object.title}}" style="max-width: 100%;">
+                                <a href="/cars_objects/{{object.id}}" class="btn btn-primary mt-2 mb-2" style="display: block;">Toyota MARK II {{object.title}}</a>
+                                <div class="d-flex justify-content-around ">
+                                       
+                                        <a href="/cars_objects/{{object.id}}?show=image">Картинка</a>
+                                        <a href="/cars_objects/{{object.id}}?show=info">Описание</a>
+                                </div>
+                        </div>
+                {% endfor %}
+                
+        </div> 

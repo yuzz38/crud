@@ -1,0 +1,26 @@
+{% extends "__layout.twig" %}
+
+{% block content %}
+    <br>
+    <h2>Добавление Типа Езды</h2>
+    <hr>
+    {% if message %}
+        <div class="alert alert-info">
+            {{message}}
+        </div>
+    {% endif %}
+    <form action="" enctype="multipart/form-data" method="post" class="row g-3">
+        <div class="col-4">
+            <label class="form-label">Тип езды (прим. Sport , Slow, Fast)</label>
+            <input type="text" class="form-control" name="nametype">
+        </div>
+           <div class="col-12">
+            <label  class="form-label">Картинка</label>
+            <input class="form-control" type="file" name="image">
+          </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+
+{% endblock %}
