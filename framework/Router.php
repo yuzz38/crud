@@ -3,8 +3,12 @@
 class Route {
     public string $route_regexp; // тут получается шаблона url
     public $controller; // а это класс контроллера
-
+    public array $middlewareList = [];
     // ну и просто конструктор
+    public function middleware(BaseMiddleware $m) : Route {
+        array_push($this->middlewareList, $m);
+        return $this;
+    }
     public function __construct($route_regexp, $controller)
     {
         $this->route_regexp = $route_regexp;
@@ -28,10 +32,13 @@ class Router {
     }
 
     // функция с помощью которой добавляем маршрут
-    public function add($route_regexp, $controller) {
-        // по сути просто пихает маршрут с привязанным контроллером в $routes
-        array_push($this->routes, new Route("#^$route_regexp$#", $controller));
+     public function add($route_regexp, $controller) : Route {
+        // создаем экземпляр маршрута
+        $route = new Route("#^$route_regexp$#", $controller);
+        array_push($this->routes, $route);
         
+        // возвращаем как результат функции
+        return $route;
     }
 
     // функция которая должна по url найти маршрут и вызывать его функцию get
@@ -42,6 +49,7 @@ class Router {
    
         // фиксируем в контроллер $default_controller
         $controller = $default_controller;
+        $newRoute = null; 
         $matches = "";
         // проходим по списку $routes 
         foreach($this->routes as $route) {
@@ -49,6 +57,7 @@ class Router {
             if (preg_match($route->route_regexp, $path, $matches)) {
                 // если подходит, то фиксируем привязанные к шаблону контроллер 
                 $controller = $route->controller;
+                $newRoute = $route;
                // и выходим из цикла
                 break;
             }
@@ -61,6 +70,11 @@ class Router {
         $controllerInstance->setParams($matches);
         if ($controllerInstance instanceof TwigBaseController) {
             $controllerInstance->setTwig($this->twig);
+        }
+        if ($newRoute) {
+            foreach ($newRoute->middlewareList as $m) {
+                $m->apply($controllerInstance, []);
+            }
         }
         // вызываем
         return $controllerInstance->process_response();

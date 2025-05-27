@@ -5,7 +5,7 @@ class TwigBaseController extends BaseController {
     public $title = ""; // название страницы
     public $template = "";
     public $url = "";
-  
+    public $page_history = "";
     public $submenu = [ 
         [
             "name" => "Картинка",
@@ -29,9 +29,10 @@ class TwigBaseController extends BaseController {
     {
         $context = parent::getContext(); // вызываем родительский метод
         $context['title'] = $this->title; // добавляем title в контекст
-
         $context['submenu'] = $this->submenu;
         $context['current_url'] = $this->url;
+        $context['page_history'] = $_SESSION['page_history'] ?? [];
+
         return $context;
     }
     

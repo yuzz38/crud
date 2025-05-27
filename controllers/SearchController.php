@@ -24,6 +24,8 @@ EOL;
         $query->bindValue("info", $info);
         $query->execute();
         $context['objects'] = $query->fetchAll();
+        $context['type'] = $type;
+
         return $context;
     }
 }

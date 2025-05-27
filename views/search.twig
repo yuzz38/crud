@@ -8,7 +8,7 @@
             <div class="col">
                 <label for="type">Тип</label><br>
                 <select name="type" class="form-control">
-                    <option value="">Все</option>
+                    <option value="">{{ type is defined ? type : 'Все' }}</option>
                     {% for type in types_from_types %}
                         <option value="{{ type.nametype }}">{{ type.nametype }}</option>
                     {% endfor %}

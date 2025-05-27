@@ -17,11 +17,10 @@ class ObjectController extends BaseSpaceTwigController {
         $query->execute(); // выполняем запрос
         $data = $query->fetch();
 
-        // Проверяем, есть ли данные
         if ($data) {
-            // Проверяем, есть ли параметр 'show' в GET-запросе
+           
             if (isset($_GET['show'])) {
-                // Если параметр 'show' передан, показываем только нужный контент
+                
                 if (($_GET['show']) === 'image') {
                     // Показываем только картинку
                     $context['image'] = $data['image'];
@@ -32,11 +31,14 @@ class ObjectController extends BaseSpaceTwigController {
                     $context['description'] = $data['description'];
                 }
             } else {
-                // Если параметр 'show' не передан, показываем описание
+              
                 
                 $context['description'] = $data['description'];
                 $context['description2'] = $data['description'];
+                
             }
+            
+            $context['page_history'] = isset($_SESSION['page_history']) ? $_SESSION['page_history'] : [];
         } 
 
         return $context;
